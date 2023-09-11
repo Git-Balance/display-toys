@@ -9,6 +9,16 @@
 - Battery percentage
 - Uptime
 - ~~Wifi and bluetooth status~~
+## Detailed ideas
+### Make a script run at start with Alacritty
+`alacritty --hold -e neofetch` will open a new alacritty window with the output of `neofetch`
+HOWEVER, it only displays the output of `neofetch`. It will NOT allow the user to input anything
+Additionally, `alacritty --hold -e "neofetch; zsh"` will not work.
+The error code of `neofetch; zsh`:
+```
+Error: Failed to spawn command 'neofetch; zsh': No such file or directory (os error 2)
+Error: "Event loop terminated with code: 1"
+```
 ## Future Plans
 - [ ] Make a function that places multiline commands like `cal` side by side, so that the widgets are able to be placed better
 EX:
