@@ -4,9 +4,9 @@ boxer()
 {
     local boxType=$1
     local boxLength=$2
-    local boxPrint=''
-    local boxStart=''
-    local boxEnd=''
+    local boxPrint="empty"
+    local boxStart="empty"
+    local boxEnd="empty"
 
     if [ "$boxType" == "up" ]
     then
@@ -21,13 +21,13 @@ boxer()
     fi
 
     boxPrint=$boxStart
-    for (( i = 0; i < $boxLength - 2; i++ ))
+    for (( i = 0; i < boxLength - 2; i++ ))
     do
         boxPrint=$boxPrint'─'
     done
     boxPrint=$boxPrint$boxEnd
 
-    echo $boxPrint
+    echo "$boxPrint"
 }
 
 calendarWidget()

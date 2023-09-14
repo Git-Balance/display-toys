@@ -10,6 +10,14 @@
 - Uptime
 - ~~Wifi and bluetooth status~~
 ## Detailed ideas
+### Fix the error with the `source` command
+Whenever you try to use `source` to get functions, this message pops up
+```
+❯ source renamethisscript.sh
+boxer:8: = not found
+```
+The issue seems to be caused by [this](https://stackoverflow.com/q/12468889/18442885) 
+
 ### Make a script run at start with Alacritty
 `alacritty --hold -e neofetch` will open a new alacritty window with the output of `neofetch`
 HOWEVER, it only displays the output of `neofetch`. It will NOT allow the user to input anything
