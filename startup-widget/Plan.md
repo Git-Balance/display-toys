@@ -10,6 +10,24 @@
 - Uptime
 - ~~Wifi and bluetooth status~~
 ## Detailed ideas
+### Improve the `boxer` function
+
+Make `boxer` actually box the entered command.
+[This command will get the largest line length](https://unix.stackexchange.com/a/24510)
+```
+awk 'length > max_length { max_length = length; longest_line = $0 } END { print longest_line }' ./text
+```
+Actually, this would be a great oprotunity to try the awk programming language (remember that awk IS a language)
+
+- [ ] Try out the awk programming language
+- [ ] 
+
+#### awk progress
+
+```bash
+awk 'length > max_length {max_length = length; longest_line = $0} END { print longest_line " " max_length }' <<< $(cat)
+```
+
 ### Fix the error with the `source` command
 Whenever you try to use `source` to get functions, this message pops up
 ```
@@ -54,7 +72,7 @@ filetest.py:14: no matches found: w*
 filetest.py:21: command not found: f.close
 ```
 
-### Make a script run at start with Alacritty
+### DONE Make a script run at start with Alacritty
 `alacritty --hold -e neofetch` will open a new alacritty window with the output of `neofetch`
 HOWEVER, it only displays the output of `neofetch`. It will NOT allow the user to input anything
 Additionally, `alacritty --hold -e "neofetch; zsh"` will not work.
