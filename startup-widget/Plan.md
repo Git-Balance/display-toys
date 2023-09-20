@@ -63,6 +63,8 @@ The error code of `neofetch; zsh`:
 Error: Failed to spawn command 'neofetch; zsh': No such file or directory (os error 2)
 Error: "Event loop terminated with code: 1"
 ```
+NVM, just adding the script to the start of the .zsh works well enough. IDK where I got the idea that I had to make the terminal emulator run the script
+
 ## Future Plans
 - [ ] Make a function that places multiline commands like `cal` side by side, so that the widgets are able to be placed better
 EX:
