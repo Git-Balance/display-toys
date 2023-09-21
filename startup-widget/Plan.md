@@ -19,13 +19,36 @@ awk 'length > max_length { max_length = length; longest_line = $0 } END { print 
 ```
 Actually, this would be a great oprotunity to try the awk programming language (remember that awk IS a language)
 
+
+
 - [ ] Try out the awk programming language
-- [ ] 
+- [ ] Research the `END` command of awk more
 
 #### awk progress
 
 ```bash
 awk 'length > max_length {max_length = length; longest_line = $0} END { print longest_line " " max_length }' <<< $(cat)
+```
+Wait, what does the `END` is the above command do? I ASSUMED that it mearly ended the if statement. However, now I'm thinking that it executes something after it reaches a EOF.
+
+
+##### Pseudocode planning
+
+```
+for each line in input
+	if length > max_length
+		max_length = length
+		longest_line = $0
+boxer down max_length+2
+for each line in input
+	--- method 1
+	Add " " until the line is the length of max_length
+	--- method 2
+	while length < max_length
+		Append " " to the end of the line
+	--- this is the current main problem
+	Add "|" to start and end of line
+boxer up max_length+2
 ```
 
 ### Fix the error with the `source` command
