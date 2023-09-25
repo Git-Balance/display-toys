@@ -22,7 +22,8 @@ Actually, this would be a great oprotunity to try the awk programming language (
 
 
 - [ ] Try out the awk programming language
-- [ ] Research the `END` command of awk more
+- [x] Research the `END` command of awk more
+- [ ] Figure out how to pipe multiline output (like the output of the cal command)
 
 #### awk progress
 

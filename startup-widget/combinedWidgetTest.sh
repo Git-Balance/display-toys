@@ -11,7 +11,9 @@ readTest() {
     echo $myarray[1]
 }
 
-read -a myarray <<< `calendarWidget`
+awkBlockTest() {
+    max_length=`cal | awk 'length >= max_length { max_length = length; longest_line = $0; print "N: " max_length " " longest_line "\\n"} END { print max_length " " longest_line "|"}'`
+    echo $max_length
+}
 
-echo $myarray[0]
-echo $myarray[1]
+awkBlockTest cal
