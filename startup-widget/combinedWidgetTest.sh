@@ -12,8 +12,17 @@ readTest() {
 }
 
 awkBlockTest() {
-    max_length=`cal | awk 'length >= max_length { max_length = length; longest_line = $0; print "N: " max_length " " longest_line "\\n"} END { print max_length " " longest_line "|"}'`
-    echo $max_length
+    max_length=`cal | awk 'length >= max_length { max_length = length; longest_line = $0 } END { print max_length }'`
+    echo "|"$max_length"|"
+    boxer down $max_length+2
+    cal | awk -v max_length=$max_length '{
+        line=$0
+        while (length < max_length) {
+            print "Looped"
+        }
+        print "│" line "│"
+    }'
+    boxer up $max_length+2
 }
 
 awkBlockTest cal

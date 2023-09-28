@@ -31,7 +31,13 @@ Actually, this would be a great oprotunity to try the awk programming language (
 awk 'length > max_length {max_length = length; longest_line = $0} END { print longest_line " " max_length }' <<< $(cat)
 ```
 Wait, what does the `END` is the above command do? I ASSUMED that it mearly ended the if statement. However, now I'm thinking that it executes something after it reaches a EOF.
+Yep, `END` executes stuff after EOF
 
+Also, minor issue
+```
+max_length=`cal | awk 'length >= max_length { max_length = length; longest_line = $0; print "N: " max_length " " longest_line "\n"} END { print max_length " " longest_line "|"}'`
+```
+`awk` should be printing newlines. However, the output of `awk` is being assigned to a variable, and variables usually get rid of newlines. Therefor, echoing `$max_length` will not be outputed on multiple lines
 
 ##### Pseudocode planning
 
