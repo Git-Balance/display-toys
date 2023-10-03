@@ -25,7 +25,7 @@ Actually, this would be a great oprotunity to try the awk programming language (
 - [x] Research the `END` command of awk more
 - [ ] Figure out how to pipe multiline output (like the output of the cal command)
 
-#### awk progress
+#### Part 1: `awk` prototype
 
 ```bash
 awk 'length > max_length {max_length = length; longest_line = $0} END { print longest_line " " max_length }' <<< $(cat)
@@ -57,6 +57,40 @@ for each line in input
 	Add "|" to start and end of line
 boxer up max_length+2
 ```
+
+#### Part 2: Add parameters
+
+Using [this article](https://www.redhat.com/sysadmin/arguments-options-bash-scripts) as a guide on how to implement args in bash
+
+`getopts` and `getopt` are *not* the same thing. You want `getopts` only
+
+```
+while getopts ":hn:" option; do
+   case $option in
+      h) # display Help function (should be declared already)
+	     Help
+         exit;;
+	  n) # get user input
+	     argThing=$OPTARG # to have a default argThing value, declare the variable before this argument code
+             # $OPTARG is the argument that is being read (-n "entered stuff")
+		 ;;
+	  \?) # invalid options run this
+	     echo "parametersTest.sh error: Invalid Option: "$OPTARG
+		 exit;;
+   esac
+done
+```
+
+Here is an interesting fact about arguments
+```
+~/Scripts/display-toys/startup-widget$ cat test.sh
+echo $1 $2 $3
+~/Scripts/display-toys/startup-widget$ ./test.sh test2 test3 test4 test5
+test2 test3 test4
+~/Scripts/display-toys/startup-widget$ ./test.sh -n test2 test3 test4 test5
+test2 test3~/Scripts/display-toys/startup-widget$
+```
+Yeah, bash does this. IDK why
 
 ### Fix the error with the `source` command
 Whenever you try to use `source` to get functions, this message pops up
