@@ -12,14 +12,14 @@ readTest() {
 }
 
 awkBlockTest() {
-    while getopts ":h:" option; do
+    while getopts ":h" option; do
         case $option in
             h) # display help
                 echo "Usage: awkBlockTest [OPTION] [COMMAND]"
                 echo "Box [COMMAND]"
-                echo "|"
+                echo
                 echo "It is recommended to use a command that has a consistent output, as this function assumes that the length of the command will not change between two calls"
-                echo "|"
+                echo "Options:"
                 echo "-h        print help text"
 
                 exit;;
@@ -49,4 +49,4 @@ awkBlockTest() {
 
 awkBlockTest cal
 awkBlockTest 'echo -e testtest\ntest\n test \nlongest line here'
-awkBlockTest cal -h
+awkBlockTest -h
