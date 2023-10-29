@@ -30,13 +30,78 @@ boxer()
     echo "$boxPrint"
 }
 
+cmdBox() {
+    boxed=""
+    width=-1
+    height=-1
+    while getopts "c:w:h:" option; do
+        case $option in
+            c)
+                boxed=$OPTARG
+                ;;
+            w)
+                width=$OPTARG
+                ;;
+            h)
+                height=$OPTARG
+                ;;
+        esac
+    done
+    max_length=`$boxed | awk '{
+        line=$0
+        while (line ~ / $/) {
+            line = substr(line, 1, length(line)-1)
+        }
+        if (length(line) >= max_length) {
+            max_length = length(line)
+        }
+    }
+    END { print max_length }'`
+    boxer down $max_length+2
+    $boxed | awk -v max_length=$max_length '{
+        line=$0
+        while (line ~ / $/) {
+            line=substr(line, 1, length(line)-1)
+        }
+        add_length = max_length-length(line)
+        while (add_length > 0) {
+            line=line" "
+            add_length=add_length-1
+        }
+        print "│" line "│"
+    }'
+    boxer up $max_length+2
+}
+
+strBox()
+{
+    len=${#1}
+    boxer down $len+2
+    echo "$1" | awk -v max_length=$len '{
+        line=$0
+        while (line ~ / $/) {
+            line=substr(line, 1, length(line)-1)
+        }
+        add_length = max_length-length(line)
+        while (add_length > 0) {
+            line=line" "
+            add_length=add_length-1
+        }
+        print "│" line "│"
+    }'
+    boxer up $len+2
+
+}
+
 calendarWidget()
 {
-    local boxSize=22
+    cmdBox -c cal
+
+    # local boxSize=22
     
-    boxer down $boxSize
-    cal | sed 's/^/ /' | cat
-    boxer up $boxSize
+    # boxer down $boxSize
+    # cal | sed 's/^/ /' | cat
+    # boxer up $boxSize
     
     # Just some tests that are here for reference 
     #
@@ -48,11 +113,8 @@ calendarWidget()
 
 statusWidget()
 {
-    local boxSize=42
-
-    boxer down $boxSize
-    echo "$(date "+ %a, %b of %d | %H:%M") | Battery at $(cat /sys/class/power_supply/BAT0/capacity)%"
-    boxer up $boxSize
+    # battery=`(cat /sys/class/power_supply/BAT0/capacity)`
+    strBox "$(date "+%a, %b of %d | %H:%M") | Battery at 100%"
 }
 
 statusWidget
