@@ -92,6 +92,43 @@ test2 test3~/Scripts/display-toys/startup-widget$
 ```
 Yeah, bash does this. IDK why
 
+#### Part 3-1: Putting it all together
+
+2 function had to be created
+- cmdBox - box a specific command
+- strBox - box a string
+
+Long story short, they both work using a mix of the combined widget test code and parameters test code, but it doesn't work particularily well. I get a glitched output if I run cmdBox in a weird way
+
+Also, strBox should be getting rid of empty space, but it just removes it and readds it
+
+Actually, now that I think about it, couldn't I just make one function that relies on piping to work?
+
+#### Part 3-2: Putting it together properly
+
+Get rid of the 2 existing functions, and replace them with one well made function
+**fullBox**
+
+It will have the following syntax
+fullBox [-w widthNum] [-l lengthNum] inputStr
+
+`-w` will lock in the width of the box 
+	add empty lines or remove existing ones when needed
+`-l` will lock in the length of the box
+`inputStr` should be self explanatory
+```
+> fullBox -w 5 -l 2 "a\nb\nc"
+-----
+|a  |
+|b  |
+-----
+```
+
+Each line will be stored in an index of a array variable
+Call it lines or something
+
+#### Part 4: Getting the arguments working (LATER)
+
 ### Fix the error with the `source` command
 Whenever you try to use `source` to get functions, this message pops up
 ```

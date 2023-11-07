@@ -93,6 +93,59 @@ strBox()
 
 }
 
+fullBox()
+{
+    lines=()
+    width=-1
+    length=-1
+    while getopts ":w:l:s:" option; do
+        case $option in
+            w)
+                width=$OPTARG
+                ;;
+            l)
+                width=$OPTARG
+                ;;
+            s)
+                lines+=( $(awk '{
+                    line = $0
+                    while (line ~ / $/) {
+                        line = substr(line, 1, length(line)-1)
+                    }
+                    print "\""line"\""
+                }') )
+                ;;
+        esac
+    done
+
+    lines+=( $(awk '{
+                    line = $0
+                    while (line ~ / $/) {
+                        line = substr(line, 1, length(line)-1)
+                    }
+                    print line
+                }' $1) )
+    
+    for line in ${lines[@]}; do
+        max_length=`awk -v line=$line -v max_length=$max_length '{ 
+            if (length(line) >= max_length) {
+                print length(line)
+            }
+        }'`
+    done
+
+    for line in ${lines[@]}; do
+        awk -v max_length=$max_length '{
+            add_length = max_length - length(line)
+            while (add_length > 0) {
+                line=line" "
+                add_length=add_length-1
+            }
+            print "│" line "│"
+        }' $line
+    done
+}
+
 calendarWidget()
 {
     cmdBox -c cal
@@ -116,6 +169,8 @@ statusWidget()
     # battery=`(cat /sys/class/power_supply/BAT0/capacity)`
     strBox "$(date "+%a, %b of %d | %H:%M") | Battery at 100%"
 }
+
+cal | fullBox
 
 statusWidget
 calendarWidget
