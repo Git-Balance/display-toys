@@ -118,14 +118,10 @@ fullBox()
         esac
     done
 
-    lines+=( $(awk '{
-                    line = $0
-                    while (line ~ / $/) {
-                        line = substr(line, 1, length(line)-1)
-                    }
-                    print line
-                }' $1) )
-    
+    lines=( $( awk -f getLines.awk < awkpipe) )
+    echo $lines
+    echo $1
+    echo $0
     for line in ${lines[@]}; do
         max_length=`awk -v line=$line -v max_length=$max_length '{ 
             if (length(line) >= max_length) {
@@ -135,7 +131,8 @@ fullBox()
     done
 
     for line in ${lines[@]}; do
-        awk -v max_length=$max_length '{
+        echo $line
+        awk -v max_length=$max_length -v line=$line '{
             add_length = max_length - length(line)
             while (add_length > 0) {
                 line=line" "
@@ -170,7 +167,6 @@ statusWidget()
     strBox "$(date "+%a, %b of %d | %H:%M") | Battery at 100%"
 }
 
-cal | fullBox
-
+fullBox
 statusWidget
 calendarWidget
