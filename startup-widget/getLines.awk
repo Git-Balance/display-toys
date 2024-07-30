@@ -1,3 +1,4 @@
+# remove spaces at the end of a line
 {
     line = $0
     while (line ~ / $/) {
