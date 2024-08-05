@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
 
-boxer()
-{
+boxer() {
     local boxType=$1
     local boxLength=$2
     local boxPrint="empty"
     local boxStart="empty"
     local boxEnd="empty"
 
-    if [ "$boxType" == "up" ]
-    then
+    if [ "$boxType" == "up" ]; then
         boxStart='└'
         boxEnd='┘'
-    elif [ "$boxType" == "down" ]
-    then
+    elif [ "$boxType" == "down" ]; then
         boxStart='┌'
         boxEnd='┐'
     else
@@ -21,8 +18,7 @@ boxer()
     fi
 
     boxPrint=$boxStart
-    for (( i = 0; i < boxLength - 2; i++ ))
-    do
+    for ((i = 0; i < boxLength - 2; i++)); do
         boxPrint=$boxPrint'─'
     done
     boxPrint=$boxPrint$boxEnd
@@ -36,18 +32,18 @@ cmdBox() {
     height=-1
     while getopts "c:w:h:" option; do
         case $option in
-            c)
-                boxed=$OPTARG
-                ;;
-            w)
-                width=$OPTARG
-                ;;
-            h)
-                height=$OPTARG
-                ;;
+        c)
+            boxed=$OPTARG
+            ;;
+        w)
+            width=$OPTARG
+            ;;
+        h)
+            height=$OPTARG
+            ;;
         esac
     done
-    max_length=`$boxed | awk '{
+    max_length=$($boxed | awk '{
         line=$0
         while (line ~ / $/) {
             line = substr(line, 1, length(line)-1)
@@ -56,7 +52,7 @@ cmdBox() {
             max_length = length(line)
         }
     }
-    END { print max_length }'`
+    END { print max_length }')
     boxer down $max_length+2
     $boxed | awk -v max_length=$max_length '{
         line=$0
@@ -73,8 +69,7 @@ cmdBox() {
     boxer up $max_length+2
 }
 
-strBox()
-{
+strBox() {
     len=${#1}
     boxer down $len+2
     echo "$1" | awk -v max_length=$len '{
@@ -93,49 +88,48 @@ strBox()
 
 }
 
-fullBox()
-{
+# This function does not work
+# I believe this function is meant to be a better version of the other two box functions
+fullBox() {
     lines=()
     width=-1
     length=-1
     while getopts ":w:l:s:" option; do
         case $option in
-            w)
-                width=$OPTARG
-                ;;
-            l)
-                width=$OPTARG
-                ;;
-            s)
-                lines+=( $(awk '{
+        w)
+            width=$OPTARG
+            ;;
+        l)
+            width=$OPTARG
+            ;;
+        s)
+            lines+=($(awk '{
                     line = $0
                     while (line ~ / $/) {
                         line = substr(line, 1, length(line)-1)
                     }
                     print "\""line"\""
-                }') )
-                ;;
+                }'))
+            ;;
         esac
     done
 
-    lines+=( $(awk '{
-                    line = $0
-                    while (line ~ / $/) {
-                        line = substr(line, 1, length(line)-1)
-                    }
-                    print line
-                }' $1) )
-    
+    lines=($(awk -f getLines.awk <awkpipe))
+    # These are probably debug scripts
+    echo $lines
+    echo $1
+    echo $0
     for line in ${lines[@]}; do
-        max_length=`awk -v line=$line -v max_length=$max_length '{ 
+        max_length=$(awk -v line=$line -v max_length=$max_length '{ 
             if (length(line) >= max_length) {
                 print length(line)
             }
-        }'`
+        }')
     done
 
     for line in ${lines[@]}; do
-        awk -v max_length=$max_length '{
+        echo $line
+        awk -v max_length=$max_length -v line=$line '{
             add_length = max_length - length(line)
             while (add_length > 0) {
                 line=line" "
@@ -146,17 +140,16 @@ fullBox()
     done
 }
 
-calendarWidget()
-{
+calendarWidget() {
     cmdBox -c cal
 
     # local boxSize=22
-    
+
     # boxer down $boxSize
     # cal | sed 's/^/ /' | cat
     # boxer up $boxSize
-    
-    # Just some tests that are here for reference 
+
+    # Just some tests that are here for reference
     #
     # boxer down 22
     # cal 2 Jan 2022 | sed 's/^/ /' | cat
@@ -164,13 +157,11 @@ calendarWidget()
     # echo "\ttest" | cat
 }
 
-statusWidget()
-{
+statusWidget() {
     # battery=`(cat /sys/class/power_supply/BAT0/capacity)`
     strBox "$(date "+%a, %b of %d | %H:%M") | Battery at 100%"
 }
 
-cal | fullBox
-
+#fullBox
 statusWidget
 calendarWidget
