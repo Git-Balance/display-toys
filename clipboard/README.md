@@ -7,7 +7,8 @@
 
 ### Function Ideas
 
-- [ ] newlines to spaces
+- [x] newlines to spaces
+  - [x] use regex to replace all '\n' with ' '
 - [x] copy date
   - [x] learn how to use copy
   - [x] use datetime to get date
