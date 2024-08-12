@@ -1,4 +1,4 @@
-import pyperclip
+import pyperclip # type: ignore
 from datetime import date
 
-print(date.today())
+pyperclip.copy(date.today())
