@@ -11,7 +11,7 @@ from pygame.mixer import Sound
 import os
 
 # TODO: This is a very hacky fix. Fix this
-cwd = os.path.join(os.getcwd(), "python-visuals")
+cwd = os.path.join(os.getcwd(), "..")
 
 def wrap_position(position, surface):
     x, y = position
